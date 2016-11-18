@@ -33,9 +33,9 @@ function setMinAndMaxRooms(roomsElement, guestsNumber) {
   roomsElement.max = guestsNumber;
 }
 // установка начальных значений
-guests.value = 2;
+guests.value = docCookies.getItem('guests');
 setMinAndMaxRooms(rooms, guests.value);
-rooms.value = rooms.min;
+rooms.value = docCookies.getItem('rooms');
 
 // 2. реакция на изменение
 
@@ -45,6 +45,24 @@ guests.onchange = function() {
   setMinAndMaxRooms(rooms, guests.value);
 };
 
-dateFrom.onchange = function() {
+/*dateFrom.onchange = function() {
   setMinDateTo(dateTo, dateFrom.value);
+};*/
+
+// При отправке формы, сохраним последние валидные данные
+// в cookies
+formElement.onsubmit = function(evt) {
+  // Объект evt представляет собой объект для работы
+  // с произошедшим событием. Метод preventDefault
+  // отменяет действие по умолчанию. В данном случае —
+  // отправку формы.
+  evt.preventDefault();
+
+  evt.dateToExpire = +Date.now() + 3*24*60*60*1000;
+  var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+
+  document.cookie = 'guests=' + guests.value + ';expires=' + formattedDateToExpire;
+  document.cookie = 'rooms=' + rooms.value + ';expires=' + formattedDateToExpire;
+
+  formElement.submit();
 };
