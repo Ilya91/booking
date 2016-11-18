@@ -32,3 +32,19 @@ function setMinAndMaxRooms(roomsElement, guestsNumber) {
   // будет жить по одному человеку.
   roomsElement.max = guestsNumber;
 }
+// установка начальных значений
+guests.value = 2;
+setMinAndMaxRooms(rooms, guests.value);
+rooms.value = rooms.min;
+
+// 2. реакция на изменение
+
+// При изменении количества гостей должны автоматически
+// пересчитаться граничные значения для количества комнат
+guests.onchange = function() {
+  setMinAndMaxRooms(rooms, guests.value);
+};
+
+dateFrom.onchange = function() {
+  setMinDateTo(dateTo, dateFrom.value);
+};
